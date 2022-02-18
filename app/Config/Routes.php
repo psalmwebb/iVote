@@ -35,6 +35,7 @@ $routes->get('/', 'Home::index');
 $routes->post('/admin/create-election','Admin::createElection');
 $routes->post('/admin/create-voter','Admin::createVoter');
 $routes->post('/admin/create-candidate','Admin::createCandidate');
+$routes->post('/voter/vote','Voter::vote');
 
 /*
  * --------------------------------------------------------------------

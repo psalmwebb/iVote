@@ -22,7 +22,7 @@
            <button class="btn btn-success rounded-0 col-12">Login</button>
        </div>
        <div class="mt-2">
-           <div class="text-center"><a class="text-decoration-none" href="<?= base_url('voter/login')?>">Login as a Voter</a></div>
+           <div class="text-center"><a class="text-decoration-none" href="<?= base_url('admin/login')?>">Login as Admin</a></div>
            <div class="text-center"><a class="text-decoration-none" href="<?= base_url('candidate/login')?>">Login as a Candidate</a></div>
        </div>
 

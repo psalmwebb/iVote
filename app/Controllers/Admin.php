@@ -96,6 +96,14 @@ class Admin extends BaseController
         return view('admin/ballot');
     }
    
+    public function logout(){
+        
+        session()->remove('userLoggedIn');
+
+        session()->destroy();
+
+        return redirect()->to(base_url('admin/login'));
+    }
 
     public function createElection(){
 
