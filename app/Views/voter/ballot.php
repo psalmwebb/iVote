@@ -6,44 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voter | Ballot</title>
     <link href="<?= base_url('public/static/css/bootstrap.min.css');?>" rel="stylesheet"/>
+    <link href="<?php echo base_url('public/static/css/main.css'); ?>" rel="stylesheet"/>
     <script src="<?= base_url('public/static/js/axios.min.js');?>"></script>
 </head>
 <body>
     
-    <?php
-       echo view('voter/partials/sidebar');
+    <div class="row p-0 m-0">
+        <?php
+          echo view('voter/partials/sidebar');
+        ?>
 
-       echo "<pre>";
-       print_r($voter);
-
-       echo "</pre>";
-    ?>
-
-
-
-   <?php if(!$voter['voted']): ?>
-    <div class="ballot">
-         <h3>CAST YOUR VOTE NOW</h3>
-         <h3><?= strtoupper($voter['election']['name']); ?></h3>
-         
-        <div>
-            <div id="errorDiv"></div>
-            <?php foreach($voter['election']['candidates'] as $candidate):?>
-                <div class="border vote-candidate" id="<?= $candidate['id']; ?>">
-                    <div>
-                        <img src=""/>
-                    </div>
-                    <h4><?= $candidate['firstname'] ?> <?= $candidate['lastname']?></h4>
+      <div class="col-10 offset-2 mt-4 position-relative">
+        <?php if(!$voter['voted']): ?>
+        <h3 class="text-center border-bottom p-2">CAST YOUR VOTE NOW</h3>
+        <div class="ballot p-3 border">
+                <h3 class="text-center lead"><?= strtoupper($voter['election']['name']); ?></h3>
+    
+                <div class="d-flex justify-content-around p-2 mt-3">
+                    <div id="errorDiv"></div>
+                    <?php foreach($voter['election']['candidates'] as $candidate):?>
+                        <div class="border vote-candidate col-3 rounded" id="<?= $candidate['id']; ?>">
+                            <div class="border p-5">
+                                <img src=""/>
+                            </div>
+                            <b class="text-center d-block"><?= ucfirst($candidate['firstname']); ?> <?= ucfirst($candidate['lastname']); ?></b>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
-            <?php endforeach; ?>
-            <div>
-                <button id="voteBtn" class="btn btn-success d-none">Vote</button>
-            </div>
+                <div class="mt-5 d-flex justify-content-center">
+                    <button id="voteBtn" class="btn btn-custom d-none rounded-0 btn-lg">Vote</button>
+                </div>
         </div>
+        <?php else: ?>
+            <h3 class="text-center lead border-bottom mt-4"><?= strtoupper($voter['election']['name']); ?></h3>
+            <h4 class="text-center">YOU'VE VOTED IN THIS ELECTION</h4>
+        <?php endif; ?>
+      </div>
     </div>
-   <?php else: ?>
-      <h4>YOU'VE VOTED IN THIS ELECTION</h4>
-   <?php endif; ?>
 
 
     <script>
@@ -52,6 +51,8 @@
        let voteBtn = document.querySelector("#voteBtn");
        let errorDiv = document.querySelector("#errorDiv");
 
+       console.log(voteBtn);
+
 
        let voteObj = {
            voterId:'<?= $voter['id'];?>',
@@ -59,21 +60,21 @@
            candidateId:''
        }
 
-       voteCandidateDiv.forEach(v=>{
+       voteCandidateDiv?.forEach(v=>{
            v.addEventListener('click',()=>{
                voteCandidateDiv.forEach(v=>{
-                   v.classList.remove('border-success');
+                   v.classList.remove('border-custom');
                })
-               v.classList.add('border-success');
+               v.classList.add('border-custom');
                voteObj.candidateId = v.id;
-               voteBtn.textContent = "vote for " + v.querySelector('h4').textContent;
+               voteBtn.textContent = "vote for " + v.querySelector('b').textContent;
                voteBtn.classList.remove('d-none');
                console.log(voteObj);
            })
        })
 
 
-       voteBtn.addEventListener('click', async ()=>{
+       voteBtn?.addEventListener('click', async ()=>{
            
            let response = await axios.post('<?= base_url('voter/vote'); ?>',{
                ...voteObj,
